@@ -6,11 +6,7 @@ mod dev_tools;
 mod screens;
 mod theme;
 
-use bevy::{
-    asset::AssetMetaCheck,
-    audio::{AudioPlugin, Volume},
-    prelude::*,
-};
+use bevy::{asset::AssetMetaCheck, prelude::*};
 
 pub struct AppPlugin;
 
@@ -42,12 +38,6 @@ impl Plugin for AppPlugin {
                         ..default()
                     }
                     .into(),
-                    ..default()
-                })
-                .set(AudioPlugin {
-                    global_volume: GlobalVolume {
-                        volume: Volume::Linear(0.3),
-                    },
                     ..default()
                 }),
         );

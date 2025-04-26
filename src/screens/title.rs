@@ -12,16 +12,23 @@ fn spawn_title_screen(mut commands: Commands) {
     commands.spawn((
         widget::ui_root("Title Screen"),
         StateScoped(Screen::Title),
+        #[cfg(not(target_family = "wasm"))]
         children![
-            widget::button("Play", enter_loading_screen),
+            widget::button("Play", enter_loading_or_gameplay_screen),
+            widget::button("Settings", enter_settings_screen),
             widget::button("Credits", enter_credits_screen),
-            #[cfg(not(target_family = "wasm"))]
             widget::button("Exit", exit_app),
+        ],
+        #[cfg(target_family = "wasm")]
+        children![
+            widget::button("Play", enter_loading_or_gameplay_screen),
+            widget::button("Settings", enter_settings_screen),
+            widget::button("Credits", enter_credits_screen),
         ],
     ));
 }
 
-fn enter_loading_screen(
+fn enter_loading_or_gameplay_screen(
     _: Trigger<Pointer<Click>>,
     resource_handles: Res<ResourceHandles>,
     mut next_screen: ResMut<NextState<Screen>>,
@@ -33,10 +40,13 @@ fn enter_loading_screen(
     }
 }
 
+fn enter_settings_screen(_: Trigger<Pointer<Click>>, mut next_screen: ResMut<NextState<Screen>>) {
+    next_screen.set(Screen::Settings);
+}
+
 fn enter_credits_screen(_: Trigger<Pointer<Click>>, mut next_screen: ResMut<NextState<Screen>>) {
     next_screen.set(Screen::Credits);
 }
-
 #[cfg(not(target_family = "wasm"))]
 fn exit_app(_: Trigger<Pointer<Click>>, mut app_exit: EventWriter<AppExit>) {
     app_exit.write(AppExit::Success);

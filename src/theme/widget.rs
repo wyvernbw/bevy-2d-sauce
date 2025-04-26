@@ -47,8 +47,55 @@ pub fn label(text: impl Into<String>) -> impl Bundle {
     )
 }
 
-/// A simple button with text and an action defined as an [`Observer`].
+/// A large rounded button with text and an action defined as an [`Observer`].
 pub fn button<E, B, M, I>(text: impl Into<String>, action: I) -> impl Bundle
+where
+    E: Event,
+    B: Bundle,
+    I: IntoObserverSystem<E, B, M>,
+{
+    button_base(
+        text,
+        action,
+        (
+            Node {
+                width: Px(300.0),
+                height: Px(80.0),
+                align_items: AlignItems::Center,
+                justify_content: JustifyContent::Center,
+                ..default()
+            },
+            BorderRadius::MAX,
+        ),
+    )
+}
+
+/// A small square button with text and an action defined as an [`Observer`].
+pub fn button_small<E, B, M, I>(text: impl Into<String>, action: I) -> impl Bundle
+where
+    E: Event,
+    B: Bundle,
+    I: IntoObserverSystem<E, B, M>,
+{
+    button_base(
+        text,
+        action,
+        Node {
+            width: Px(30.0),
+            height: Px(30.0),
+            align_items: AlignItems::Center,
+            justify_content: JustifyContent::Center,
+            ..default()
+        },
+    )
+}
+
+/// A simple button with text and an action defined as an [`Observer`]. The button's layout is provided by `button_bundle`.
+fn button_base<E, B, M, I>(
+    text: impl Into<String>,
+    action: I,
+    button_bundle: impl Bundle,
+) -> impl Bundle
 where
     E: Event,
     B: Bundle,
@@ -64,14 +111,6 @@ where
                 .spawn((
                     Name::new("Button Inner"),
                     Button,
-                    Node {
-                        width: Px(300.0),
-                        height: Px(80.0),
-                        align_items: AlignItems::Center,
-                        justify_content: JustifyContent::Center,
-                        ..default()
-                    },
-                    BorderRadius::MAX,
                     BackgroundColor(BUTTON_BACKGROUND),
                     InteractionPalette {
                         none: BUTTON_BACKGROUND,
@@ -85,6 +124,7 @@ where
                         TextColor(BUTTON_TEXT),
                     )],
                 ))
+                .insert(button_bundle)
                 .observe(action);
         })),
     )
