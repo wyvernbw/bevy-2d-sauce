@@ -83,6 +83,32 @@ Here's a quick guide for porting this template's [VS Code snippets](../.vscode/b
 
 To make it easier to enable or disable these live templates for different projects, you can put them in a template group called `Bevy`.
 
+## Debugging with RustRover  
+
+This template comes with a Cargo Run Configuration that disables dynamic linking (and dev tools) so that the debugger will work out of the box. If you'd like to enable those features in the debugger, it'll require some setup:
+
+1. Run `rustc --print target-libdir` and copy the output. You can specify a channel here with e.g. `rustc +nightly --print target-libdir`
+2. Edit the Cargo Run Configuration named "Run Native Debug" (it should be the one without a terminal icon).
+3. Add the following Environment Variable:
+  a. Linux or Mac: `LD_LIBRARY_PATH` = `./target/debug/deps:<LIBDIR_PATH>` where `<LIBDIR_PATH>` is the output from step 1.
+  b. Windows: `PATH` = `.\target\debug\deps:<LIBDIR_PATH>`, where `<LIBDIR_PATH>` is the output from step 1.
+3. Remove `--no-default-features` from the command in the Run Configuration.
+4. Click Apply and then Debug, and if everything is correct it should launch the game.
+
+If you want to use multiple different channels for the same project, you will need to add in a `LIBDIR_PATH` for every channel you intend on using.
+
+If you're still having issues, please ensure that the channels in the path and the Run Configuration match, and that there are no extra spaces (especially at the beginning or end).
+
+> [!NOTE]
+> <details>
+> <summary>Attaching the debugger to a running game</summary>
+>
+> If you started your game with a Shell Script Run Configuration, you can attach the debugger to it while it's running by using `Run > Attach to Process` and selecting the process with the same name as your game (not the one named `bevy`).
+>
+> This does not work for web builds.
+> </details>
+
+
 ## Other templates
 
 There are many other Bevy templates out there.
