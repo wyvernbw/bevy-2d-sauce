@@ -116,6 +116,8 @@ jobs:
       - get-version
     env:
       version: ${{ needs.get-version.outputs.version }}
+      # Avoid rate-limiting. See: <https://github.com/cargo-bins/cargo-binstall/issues/2045>.
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         include:
@@ -194,7 +196,7 @@ jobs:
           shared-key: release
           save-if: ${{ github.ref == 'refs/heads/main' }}
 
-      - name: Install Bevy dependencies (Linux)
+      - name: Install build dependencies (Linux)
         if: ${{ env.is_platform_enabled == 'true' && matrix.platform == 'linux' }}
         run: sudo apt-get update; sudo apt-get install --no-install-recommends libasound2-dev libudev-dev libwayland-dev libxkbcommon-dev
 
@@ -202,13 +204,13 @@ jobs:
         if: ${{ env.is_platform_enabled == 'true' }}
         run: rm -rf tmp; mkdir -p tmp/binary '${{ env.app }}'
 
+      - name: Install cargo-binstall
+        if: ${{ env.is_platform_enabled == 'true' }}
+        uses: cargo-bins/cargo-binstall@main
+
       - name: Install Bevy CLI
         if: ${{ env.is_platform_enabled == 'true' }}
-        run: cargo install --locked --git='https://github.com/TheBevyFlock/bevy_cli' bevy_cli
-
-      - name: Install cargo-binstall (Web)
-        if: ${{ env.is_platform_enabled == 'true' && matrix.platform == 'web' }}
-        uses: cargo-bins/cargo-binstall@main
+        run: cargo binstall --locked --no-confirm --git='https://github.com/TheBevyFlock/bevy_cli' bevy_cli
 
       - name: Install wasm-opt (Web)
         if: ${{ env.is_platform_enabled == 'true' && matrix.platform == 'web' }}
