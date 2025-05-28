@@ -34,7 +34,8 @@ This template comes with a basic project structure that you may find useful:
 | [`src/audio.rs`](./src/audio.rs)                   | Marker components for sound effects and music                      |
 | [`src/dev_tools.rs`](./src/dev_tools.rs)           | Dev tools for dev builds (press \` aka backtick to toggle)         |
 | [`src/demo/`](./src/demo)                          | Example game mechanics & content (replace with your own code)      |
-| [`src/screens/`](./src/screens)                    | Splash screen, title screen, gameplay screen, etc.                 |
+| [`src/menus/`](./src/menus)                        | Main menu, pause menu, settings menu, etc.                         |
+| [`src/screens/`](./src/screens)                    | Splash screen, title screen, loading screen, etc.                  |
 | [`src/theme/`](./src/theme)                        | Reusable UI widgets & theming                                      |
 
 Feel free to move things around however you want, though.
@@ -137,4 +138,4 @@ The CC0 license explicitly does not waive patent rights, but we confirm that we 
 
 ## Credits
 
-The [assets](./assets) in this repository are all 3rd-party. See the [credits screen](./src/screens/credits.rs) for more information.
+The [assets](./assets) in this repository are all 3rd-party. See the [credits menu](./src/menus/credits.rs) for more information.
