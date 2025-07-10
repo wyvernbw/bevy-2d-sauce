@@ -17,6 +17,12 @@ tracing = { version = "0.1", features = [
     "max_level_debug",
     "release_max_level_warn",
 ] }
+leafwing-input-manager = "0.17.0"
+leafwing_abilities = "0.11.0"
+i-cant-believe-its-not-bsn = "0.3.0"
+bevy_kira_audio = "0.23.0"
+bevy_asset_loader = "0.23.0"
+bevy_tweening = "0.13.0"
 
 # Your web builds will start failing if you add a dependency that pulls in `getrandom` v0.3+.
 # To fix this, you should tell `getrandom` to use the `wasm_js` backend on Wasm.
